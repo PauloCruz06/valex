@@ -1,10 +1,10 @@
 import Joi from "joi";
 
-const validateCardSchema: any = Joi.object({
+const validateCardSchema = Joi.object({
     employeeId: Joi.number().min(1).required(),
     type: Joi.string().valid(
         'groceries',
-        'restaurants',
+        'restaurant',
         'transport',
         'education',
         'health'
