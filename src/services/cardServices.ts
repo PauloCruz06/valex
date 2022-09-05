@@ -115,7 +115,10 @@ export async function showBalance(cardId: number) {
     let transations = {};
     
     if(rechargesList.length) {
-        recharges = rechargesList;
+        recharges = rechargesList.map(recharge => ({
+            ...recharge,
+            timestamp: dayjs(`${recharge.timestamp}`).format('DD/MM/YYYY')
+        }));
 
         balance += rechargesList.map(
             recharge => recharge.amount
@@ -124,7 +127,10 @@ export async function showBalance(cardId: number) {
         );
     }
     if(paymentsList.length) {
-        transations = paymentsList;
+        transations = paymentsList.map(payment => ({
+            ...payment,
+            timestamp: dayjs(`${payment.timestamp}`).format('DD/MM/YYYY')
+        }));
 
         balance -= paymentsList.map(
             payment => payment.amount
