@@ -81,7 +81,26 @@ export async function activateCard( cardId: number, cardCVV: string, cardPasswor
     return { password: cardPassword };
 }
 
-function cardholderNameCreation(employeeFullName: string) : string {
+export async function blockCard( cardNumber: string, cardPassword: string, isCardBlocked: boolean ) {
+    const cryptr = new Cryptr(process.env.SECRET_KEY);
+
+    const cardsList = await cardRepository.find();
+    const card = cardsList.find(card => card.number === cardNumber);
+    if(!card)
+        throw { code: 'NotFound', message: 'card not found' };
+    if(dayjs() >= dayjs(`01/${card.expirationDate}`))
+        throw { code: 'UnprocessableEntity', message: 'card is expired' };
+    if(card.isBlocked === isCardBlocked)
+        throw { code: 'UnprocessableEntity', message: 'card is already blocked/unblocked' };
+    if(cardPassword !== cryptr.decrypt(card.password))
+        throw { code: 'Unauthorized', message: 'password invalid' };
+    
+    await cardRepository.update(card.id, { isBlocked: isCardBlocked });
+
+    return { message: 'Card has been blocked/unblocked successfully' };
+}
+
+function cardholderNameCreation( employeeFullName: string ) : string {
     const arrName = employeeFullName.split(' ');
     let strName = "";
    

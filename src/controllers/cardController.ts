@@ -16,3 +16,19 @@ export async function activateCard(req: Request, res: Response) {
 
     res.status(200).send(result);
 }
+
+export async function blockCard(req: Request, res: Response) {
+    const { cardNumber, password } :
+        { cardNumber: string, password: string } = req.body;
+    const result = await cardServices.blockCard(cardNumber, password, true);
+
+    res.status(200).send(result);
+}
+
+export async function unblockCard(req: Request, res: Response) {
+    const { cardNumber, password } :
+        { cardNumber: string, password: string } = req.body;
+    const result = await cardServices.blockCard(cardNumber, password, false);
+
+    res.status(200).send(result);
+}

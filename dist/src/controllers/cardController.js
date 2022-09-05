@@ -23,3 +23,17 @@ export function activateCard(req, res) {
         res.status(200).send(result);
     });
 }
+export function blockCard(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { cardNumber, password } = req.body;
+        const result = yield cardServices.blockCard(cardNumber, password, true);
+        res.status(200).send(result);
+    });
+}
+export function unblockCard(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { cardNumber, password } = req.body;
+        const result = yield cardServices.blockCard(cardNumber, password, false);
+        res.status(200).send(result);
+    });
+}
