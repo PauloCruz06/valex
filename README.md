@@ -48,7 +48,7 @@ A resposta da requisição virá no seguinte formato:
       "id": 1,
       "cardId": 13,
       "businessId": 5,
-      "timestamp": "2022-09-05T06:21:41.000Z",
+      "timestamp": "05/09/2022",
       "amount": 3000,
       "businessName": "Unimed"
     }
@@ -57,13 +57,13 @@ A resposta da requisição virá no seguinte formato:
     {
       "id": 1,
       "cardId": 13,
-      "timestamp": "2022-09-05T02:15:57.000Z",
+      "timestamp": "04/09/2022",
       "amount": 5000
     },
     {
       "id": 2,
       "cardId": 13,
-      "timestamp": "2022-09-05T02:16:37.000Z",
+      "timestamp": "04/09/2022",
       "amount": 5000
     }
   ]
