@@ -8,6 +8,8 @@ dayjs().format();
 
 import * as employeeRepository from "../repositories/employeeRepository.js";
 import * as cardRepository from "../repositories/cardRepository.js";
+import * as rechargeRepository from "../repositories/rechargeRepository.js";
+import * as paymentRepository from "../repositories/paymentRepository.js";
 
 export async function createCard( companyId: number, employeeId: number, type: any) {
     const cryptr = new Cryptr(process.env.SECRET_KEY);
@@ -98,6 +100,44 @@ export async function blockCard( cardNumber: string, cardPassword: string, isCar
     await cardRepository.update(card.id, { isBlocked: isCardBlocked });
 
     return { message: 'Card has been blocked/unblocked successfully' };
+}
+
+export async function showBalance(cardId: number) {
+    const card = await cardRepository.findById(cardId);
+
+    if(!card)
+        throw { code: 'NotFound', message: 'card not found' };
+    
+    const rechargesList = await rechargeRepository.findByCardId(card.id); 
+    const paymentsList = await paymentRepository.findByCardId(card.id);
+    let balance = 0;
+    let recharges = {};
+    let transations = {};
+    
+    if(rechargesList.length) {
+        recharges = rechargesList;
+
+        balance += rechargesList.map(
+            recharge => recharge.amount
+        ).reduce(
+            (total, num) => total + num
+        );
+    }
+    if(paymentsList.length) {
+        transations = paymentsList;
+
+        balance -= paymentsList.map(
+            payment => payment.amount
+        ).reduce(
+            (total, num) => total + num
+        );
+    }
+    
+    return {
+        balance,
+        transations,
+        recharges
+    };
 }
 
 function cardholderNameCreation( employeeFullName: string ) : string {

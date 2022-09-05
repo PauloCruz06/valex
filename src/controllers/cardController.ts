@@ -17,6 +17,13 @@ export async function activateCard(req: Request, res: Response) {
     res.status(200).send(result);
 }
 
+export async function showBalance(req: Request, res: Response) {
+    const cardId  = Number(req.params.cardId);
+    const result = await cardServices.showBalance(cardId);
+    
+    res.status(200).send(result);
+}
+
 export async function blockCard(req: Request, res: Response) {
     const { cardNumber, password } :
         { cardNumber: string, password: string } = req.body;

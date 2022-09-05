@@ -17,3 +17,21 @@ export function validateSchema(schema: any) {
 
     return value;
 }
+
+export function validateParams(schema: any) {
+    const value = (req: Request, res: Response, next: NextFunction) => {
+       
+        const params = req.params;
+        const { error } = schema.validate(params, { abortEarly: false });
+
+        if(error) {
+            return res
+                .status(422)
+                .send(error.details.map((detail: { message: any; }) => detail.message));
+        }
+
+        next();
+    };
+
+    return value;
+}

@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { validateSchema } from "../middlewares/validateSchema.js";
+import { validateSchema, validateParams } from "../middlewares/validateSchema.js";
 import {
-    createCard, activateCard, blockCard, unblockCard
+    createCard, activateCard, showBalance, blockCard, unblockCard
 } from "../controllers/cardController.js";
 import { apiKeyValidation } from "../middlewares/apiKeyValidation.js";
 import validateCardSchema from "../schemas/validateCardSchema.js";
+import idValidateSchema from "../schemas/idValidateSchema.js";
 import activateCardSchema from "../schemas/activateCardSchema.js";
 import blockCardValidateSchema from "../schemas/blockCardValidateSchema.js";
 
@@ -20,6 +21,11 @@ cardRouter.post(
     validateSchema(activateCardSchema),
     activateCard
 );
+cardRouter.get(
+    "/showbalance/:cardId",
+    validateParams(idValidateSchema),
+    showBalance
+)
 cardRouter.post(
     "/cards/blocked",
     validateSchema(blockCardValidateSchema),
